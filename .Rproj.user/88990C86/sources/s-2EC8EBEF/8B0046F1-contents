@@ -1,0 +1,70 @@
+---
+title: "Final Project"
+author: "Ian Baker, Loughlin Claus, Zack Schieberl"
+date: "12/7/2019"
+geometry: margin=2cm
+output: pdf_document
+---
+
+## Pledge
+I pledge my honor that I have abided by the Stevens Honor System
+- Ian Baker, Loughlin Claus, Zack Schieberl
+
+## 11.53
+
+```{r fig.height=3, fig.width=3.5, fig.show='hold'}
+cheese <- as.matrix(read.csv2("cheese.csv", header = TRUE, sep = ","))
+
+cheeseCols <- colnames(cheese)
+for (col in cheeseCols) {
+  cur <- as.numeric(cheese[, col])
+  # mean, median, sd, iqr
+  out <- c(paste("Type:", col), paste("Mean:", round(mean(cur), 2)),
+           paste("Median:", round(median(cur), 2)), paste("SD:", round(sd(cur), 2)),
+           paste("IQR:", round(IQR(cur), 2)))
+  print(format(out, justify = "left", trim = TRUE))
+  # stemplot
+  stem(cur)
+  # normal quantile plot
+  qqnorm(cur, main = col)
+  qqline(cur)
+}
+```
+
+While H2S and Taste have some right skew, and Acetic has two peaks, the data all appears to be relatively normal. There are no outliers in the data.
+
+## 11.54
+
+```{r fig.height=3, fig.width=3.5, fig.show='hold'}
+for (col in cheeseCols) {
+  colIdx <- grep(col, cheeseCols)
+  col1Data <- as.numeric(cheese[, col])
+  for (col2 in cheeseCols) {
+    if (colIdx < grep(col2, cheeseCols)) {
+      col2Data <- as.numeric(cheese[, col2])
+      plot(col1Data, col2Data, xlab = col, ylab = col2)
+      correl <- cor.test(col1Data, col2Data)
+      cat("Correlation between", col, "and", col2, "is:", correl$estimate,
+          "with a p-value of", correl$p.value, "\n")
+    }
+  }
+}
+```
+
+## 11.55
+
+```{r}
+tasteCol <- as.numeric(cheese[, "taste"])
+aceticCol <- as.numeric(cheese[, "acetic"])
+tasteVsAcetic <- lm(tasteCol ~ aceticCol, data.frame(cheese))
+plot(aceticCol, tasteCol, xlab = "Acetic", ylab = "Taste")
+abline(tasteVsAcetic)
+```
+
+```{r fig.height=3, fig.width=3.5, fig.show='hold'}
+tVsAResiduals <- residuals(tasteVsAcetic)
+plot(cheese[, "h2s"], tVsAResiduals, xlab = "H2S", ylab = "TvA Residuals")
+plot(cheese[, "lactic"], tVsAResiduals, xlab = "Lactic", ylab = "TvA Residuals")
+```
+
+The residuals both have a normal distribution and seem to be positively associated with Lactic and H2S.
