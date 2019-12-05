@@ -173,9 +173,9 @@ Since the p-value of the model with both variables is far less than the p-values
 ## 11.61
 
 ```{r}
-tasteVall <- lm(tasteCol ~ (h2sCol + lacticCol +aceticCol), data.frame(cheese))
+tasteVall <- lm(tasteCol ~ (h2sCol + lacticCol + aceticCol), data.frame(cheese))
 summary(tasteVall)
-summary(tasteVsHplusL)
+summary(THLModel)
 ```
 
 Of all the Model's computed
