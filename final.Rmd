@@ -122,11 +122,14 @@ knitr::kable(data.frame(
 
 # regression equations
 printEq <- function(funcSum, name) {
-  cat(name, funcSum$coefficients[, 3][1], "+ x *", funcSum$coefficients[, 3][2], "\n")  
+  cat("Taste vs", name, funcSum$coefficients[, 3][1], "+", name, "*", funcSum$coefficients[, 3][2], "\n") 
 }
-printEq(tVsASum, "Taste vs Acetic:")
-printEq(tVsHSum, "Taste vs H2S:")
-printEq(tVsLSum, "Taste vs Lactic:")
+```
+
+```{r}
+printEq(tVsASum, "Acetic")
+printEq(tVsHSum, "H2S")
+printEq(tVsLSum, "Lactic")
 ```
 
 The intercepts in the three equations are different because the explanitory variables all have different values, leading to the points being plotted in different places. Since the linear equations are estimating the best fit line for these datapoints, it is only natural that the differing data produces different intercepts.
@@ -134,27 +137,31 @@ The intercepts in the three equations are different because the explanitory vari
 ## 11.59
 
 ```{r}
-
 tasteVsAnH <- lm(tasteCol ~ aceticCol+h2sCol, data.frame(cheese))
 summary(tasteVsAnH)
-
 ```
 Taste^ = -26.94 + 3.801*acetic + 5.146*h2s
 
 There is not much statistical significance of Acetic in this model, this loss in (Acetic) significance from the prior model, which used Acetic as the sole predictor, is most likely caused by the large positive correlation between H2S and Acetic. When Acetic is used to predict Taste in conjunction with H2S, there is not much significant information contributed by Acetic that H2S hasn't already done better. 
-```{r fig.height=3, fig.width=3.5, fig.show='hold'}
 
-##tVsResiduals <- residuals(tasteVsLactic)
-##plot(cheese[, "acetic"], tVsLResiduals, xlab = "Acetic", ylab = "TvL Residuals")
-##plot(cheese[, "h2s"], tVsLResiduals, xlab = "H2S", ylab = "TvL Residuals")
-```
 
 ## 11.60
 
 ```{r}
-tasteVsHplusL <- lm(tasteCol ~ (h2sCol + lacticCol), data.frame(cheese))
-summary(tasteVsHplusL)
+THLModel <- lm(tasteCol ~ (h2sCol + lacticCol), data.frame(cheese))
+THLSum   <- summary(THLModel)
+
+cat("Regression Equation for H2S and Lactic:",
+    THLSum$coefficients[, 3][1], "+", "H2s+Lactic *", THLSum$coefficients[, 3][2], "\n")
+
+lmp <- function(fStats) {
+  return (pf(fStats[1], fStats[2], fStats[3], lower.tail = F))
+}
+
+cat("P-Value:", lmp(THLSum$fstatistic), "\n")
 ```
+
+Since the p-value of the model with both variables is far less than the p-values of the variables by themselves, it is a much better fit for predicting cheese taste.
 
 ## 11.61
 
