@@ -106,6 +106,10 @@ Again, there appears to be no correlation between the residuals and the other va
 ## 11.58
 
 ```{r results="asis"}
+tVsASum <- summary(tasteVsAcetic)
+tVsHSum <- summary(tasteVsH2S)
+tVsLSum <- summary(tasteVsLactic)
+
 fStats  <- c(tVsASum$fstatistic[1], tVsHSum$fstatistic[1], tVsLSum$fstatistic[1])
 pVals   <- c(tVsASum$coefficients[, 4][2], tVsHSum$coefficients[, 4][2],
              tVsLSum$coefficients[, 4][2])
