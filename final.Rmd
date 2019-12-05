@@ -68,3 +68,65 @@ plot(cheese[, "lactic"], tVsAResiduals, xlab = "Lactic", ylab = "TvA Residuals")
 ```
 
 The residuals both have a normal distribution and seem to be positively associated with Lactic and H2S.
+
+## 11.56
+
+```{r}
+h2sCol <- as.numeric(cheese[, "h2s"])
+tasteVsH2S <- lm(tasteCol ~ h2sCol, data.frame(cheese))
+plot(h2sCol, tasteCol, xlab = "H2S", ylab = "Taste")
+abline(tasteVsH2S)
+```
+
+```{r fig.height=3, fig.width=3.5, fig.show='hold'}
+tVsHResiduals <- residuals(tasteVsH2S)
+plot(cheese[, "acetic"], tVsHResiduals, xlab = "Acetic", ylab = "TvH2S Residuals")
+plot(cheese[, "lactic"], tVsHResiduals, xlab = "Lactic", ylab = "TvH2S Residuals")
+```
+
+From the graphs there appears to be no correlation between the residuals and other variables. 
+
+## 11.57
+
+```{r}
+lacticCol <- as.numeric(cheese[, "lactic"])
+tasteVsLactic <- lm(tasteCol ~ lacticCol, data.frame(cheese))
+plot(lacticCol, tasteCol, xlab = "Lactic", ylab = "Taste")
+abline(tasteVsLactic)
+```
+
+```{r fig.height=3, fig.width=3.5, fig.show='hold'}
+tVsLResiduals <- residuals(tasteVsLactic)
+plot(cheese[, "acetic"], tVsLResiduals, xlab = "Acetic", ylab = "TvL Residuals")
+plot(cheese[, "h2s"], tVsLResiduals, xlab = "H2S", ylab = "TvL Residuals")
+```
+
+Again, there appears to be no correlation between the residuals and the other variables.
+
+## 11.58
+
+```{r}
+library(dplyr)
+# table of F stat, P-val, R^2, and standard dev estimate
+tVsASum <- summary(tasteVsAcetic)
+tVsHSum <- summary(tasteVsH2S)
+tVsLSum <- summary(tasteVsLactic)
+
+kable()
+
+# regression equations
+```
+
+The intercepts in the three equations are different because the explanitory variables all have different values, leading to the points being plotted in different places. Since the linear equations are estimating the best fit line for these datapoints, it is only natural that the differing data produces different intercepts.
+
+## 11.59
+
+TODO
+
+## 11.60
+
+TODO
+
+## 11.61
+
+TODO
