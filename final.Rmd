@@ -105,14 +105,24 @@ Again, there appears to be no correlation between the residuals and the other va
 
 ## 11.58
 
-```{r}
-# table of F stat, P-val, R^2, and standard dev estimate
-summary(tasteVsAcetic)["coefficients"]
-summary(tasteVsH2S)["coefficients"]
-summary(tasteVsLactic)["coefficients"]
+```{r results="asis"}
+fStats  <- c(tVsASum$fstatistic[1], tVsHSum$fstatistic[1], tVsLSum$fstatistic[1])
+pVals   <- c(tVsASum$coefficients[, 4][2], tVsHSum$coefficients[, 4][2],
+             tVsLSum$coefficients[, 4][2])
+rSqVals <- c(tVsASum$r.squared, tVsHSum$r.squared, tVsLSum$r.squared)
+sdEst   <- c(tVsASum$sigma, tVsHSum$sigma, tVsLSum$sigma)
 
+knitr::kable(data.frame(
+  fStats, pVals, rSqVals, sdEst
+))
 
 # regression equations
+printEq <- function(funcSum, name) {
+  cat(name, funcSum$coefficients[, 3][1], "+ x *", funcSum$coefficients[, 3][2], "\n")  
+}
+printEq(tVsASum, "Taste vs Acetic:")
+printEq(tVsHSum, "Taste vs H2S:")
+printEq(tVsLSum, "Taste vs Lactic:")
 ```
 
 The intercepts in the three equations are different because the explanitory variables all have different values, leading to the points being plotted in different places. Since the linear equations are estimating the best fit line for these datapoints, it is only natural that the differing data produces different intercepts.
