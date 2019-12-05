@@ -138,7 +138,10 @@ TODO
 
 ## 11.60
 
-TODO
+```{r}
+tasteVsHplusL <- lm(tasteCol ~ (h2sCol + lacticCol), data.frame(cheese))
+summary(tasteVsHplusL)
+```
 
 ## 11.61
 
