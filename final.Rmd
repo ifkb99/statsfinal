@@ -149,6 +149,8 @@ Taste^ = -26.94 + 3.801*acetic + 5.146*h2s
 
 There is not much statistical significance of Acetic in this model, this loss in (Acetic) significance from the prior model, which used Acetic as the sole predictor, is most likely caused by the large positive correlation between H2S and Acetic. When Acetic is used to predict Taste in conjunction with H2S, there is not much significant information contributed by Acetic that H2S hasn't already done better. 
 
+Between using Acetic and H2S as a predictor model and using Acetic as the lone predictor model, I would prefer using the Acetic and H2S as a predictor model, due to its much larger overall significance level (7.635*10^-6)
+
 
 ## 11.60
 
@@ -170,4 +172,10 @@ Since the p-value of the model with both variables is far less than the p-values
 
 ## 11.61
 
-TODO
+```{r}
+tasteVall <- lm(tasteCol ~ (h2sCol + lacticCol +aceticCol), data.frame(cheese))
+summary(tasteVall)
+summary(tasteVsHplusL)
+```
+
+Of all the Model's computed
