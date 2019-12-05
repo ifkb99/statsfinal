@@ -106,13 +106,11 @@ Again, there appears to be no correlation between the residuals and the other va
 ## 11.58
 
 ```{r}
-library(dplyr)
 # table of F stat, P-val, R^2, and standard dev estimate
-tVsASum <- summary(tasteVsAcetic)
-tVsHSum <- summary(tasteVsH2S)
-tVsLSum <- summary(tasteVsLactic)
+summary(tasteVsAcetic)["coefficients"]
+summary(tasteVsH2S)["coefficients"]
+summary(tasteVsLactic)["coefficients"]
 
-kable()
 
 # regression equations
 ```
@@ -121,7 +119,21 @@ The intercepts in the three equations are different because the explanitory vari
 
 ## 11.59
 
-TODO
+```{r}
+
+tasteVsAnH <- lm(tasteCol ~ aceticCol+h2sCol, data.frame(cheese))
+summary(tasteVsAnH)
+
+```
+Taste^ = -26.94 + 3.801*acetic + 5.146*h2s
+
+There is not much statistical significance of Acetic in this model, this loss in (Acetic) significance from the prior model, which used Acetic as the sole predictor, is most likely caused by the large positive correlation between H2S and Acetic. When Acetic is used to predict Taste in conjunction with H2S, there is not much significant information contributed by Acetic that H2S hasn't already done better. 
+```{r fig.height=3, fig.width=3.5, fig.show='hold'}
+
+##tVsResiduals <- residuals(tasteVsLactic)
+##plot(cheese[, "acetic"], tVsLResiduals, xlab = "Acetic", ylab = "TvL Residuals")
+##plot(cheese[, "h2s"], tVsLResiduals, xlab = "H2S", ylab = "TvL Residuals")
+```
 
 ## 11.60
 
