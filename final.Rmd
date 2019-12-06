@@ -143,13 +143,16 @@ The intercepts in the three equations are different because the explanitory vari
 
 ```{r}
 tasteVsAnH <- lm(tasteCol ~ aceticCol+h2sCol, data.frame(cheese))
-summary(tasteVsAnH)
+tvAHsum<-summary(tasteVsAnH)
+TAHcoef<-unlist(tasteVsAnH["coefficients"])
+cat("Taste^ =", TAHcoef[1],"+",TAHcoef[2],"* acetic +",TAHcoef[3],"* H2S\n")
+cat("p-value:",1-pf(tvAHsum[[10]][1],tvAHsum[[10]][2],tvAHsum[[10]][3]),'\n')
+coef(tvAHsum)
 ```
-Taste^ = -26.94 + 3.801*acetic + 5.146*h2s
 
-There is not much statistical significance of Acetic in this model, this loss in (Acetic) significance from the prior model, which used Acetic as the sole predictor, is most likely caused by the large positive correlation between H2S and Acetic. When Acetic is used to predict Taste in conjunction with H2S, there is not much significant information contributed by Acetic that H2S hasn't already done better. 
+There is not much statistical significance of Acetic in this model (seen in Acetic's large p-value of 0.406), this loss in (Acetic's) significance from its prior model (which used Acetic as the sole predictor) is most likely due to the large positive correlation between H2S and Acetic. When Acetic is used to predict Taste in conjunction with H2S, there is not much significant information contributed by Acetic that H2S hasn't already done better. This can be seen in the realtively small amount of change Acetic causes between the p-values of this model (7.645e-6) and the p-values of H2S' model (1.374e-6).
 
-Between using Acetic and H2S as a predictor model and using Acetic as the lone predictor model, I would prefer using the Acetic and H2S as a predictor model, due to its much larger overall significance level (7.635*10^-6)
+Between the model using both Acetic and H2S as a predictor and the model using solely Acetic as the predictor, I would prefer the model using both Acetic and H2S as a predictor, because of the model's much smaller p-value (7.645e-6 vs 0.00168). Although, if I had the choice, I would pick H2S over both of them, as it has an even smaller p-value (1.374e-6).
 
 
 ## 11.60
@@ -173,9 +176,21 @@ Since the p-value of the model with both variables is far less than the p-values
 ## 11.61
 
 ```{r}
-tasteVall <- lm(tasteCol ~ (h2sCol + lacticCol + aceticCol), data.frame(cheese))
-summary(tasteVall)
-summary(THLModel)
+tasteVall <- lm(tasteCol ~ (aceticCol + h2sCol + lacticCol), data.frame(cheese))
+allSum<-summary(tasteVall)
+tasteVallcoef <-unlist(tasteVall["coefficients"])
+words<-colnames(cheese)
+cat("Taste^ =", tasteVallcoef[1])
+for (i in c(2,3,4)){
+  cat(" +", tasteVallcoef[i],"*",words[i])
+  plot(cheese[,i],residuals(tasteVall),xlab=words[i],ylab="Residuals",
+       main=paste("Scatter plot of",words[i],"and all Residuals"))
+}
+hist(residuals(tasteVall),xlab="all Residuals", main="Histogram of all Residuals")
+cat('\np-value:',1-pf(allSum[[10]][1],allSum[[10]][2],allSum[[10]][3]),'\n')
+coef(allSum)
+boxplot(residuals(tasteVall),main="Boxplot of all Residuals")
 ```
-
-Of all the Model's computed
+The Acetic explanatory variable is practically negligable (has a p-value of practically 1, and its coefficient in the linear regression equation is practically 0), which leaves H2S and Lactice as the only statistically significant explanatory variables in this model.
+None of the scatter plots of the Residuals vs the individual explanatory variables seem to display any notable patterns. The Residuals' histogram and Boxplots seem to display a normally distribution, though there is an outlier with the value of 25.44886. 
+Of all the Models computed, I would most prefer to use the model that uses h2s and lactic to predict taste, as not only are they the only statistically significant variables in this problem, but their individual model also has the smallest p-value (6.551e-07) of all the models (meaning it is the most statisticallly significant of all the models). 
