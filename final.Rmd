@@ -71,6 +71,7 @@ plot(cheese[, "h2s"], tVsAResiduals, xlab = "H2S", ylab = "TvA Residuals")
 plot(cheese[, "lactic"], tVsAResiduals, xlab = "Lactic", ylab = "TvA Residuals")
 
 printRegEq(summary(tasteVsAcetic), "Acetic")
+plot(density(tVsAResiduals))
 ```
 
 The residuals both have a normal distribution and seem to be positively associated with Lactic and H2S.
@@ -90,9 +91,10 @@ plot(cheese[, "acetic"], tVsHResiduals, xlab = "Acetic", ylab = "TvH2S Residuals
 plot(cheese[, "lactic"], tVsHResiduals, xlab = "Lactic", ylab = "TvH2S Residuals")
 
 printRegEq(summary(tasteVsH2S), "H2S")
+plot(density(tVsHResiduals))
 ```
 
-From the graphs there appears to be no correlation between the residuals and other variables. 
+The residuals appear to have a normal distribution. From the graphs there appears to be no correlation between the residuals and other variables. 
 
 ## 11.57
 
@@ -109,9 +111,10 @@ plot(cheese[, "acetic"], tVsLResiduals, xlab = "Acetic", ylab = "TvL Residuals")
 plot(cheese[, "h2s"], tVsLResiduals, xlab = "H2S", ylab = "TvL Residuals")
 
 printRegEq(summary(tasteVsLactic), "Lactic")
+plot(density(tVsLResiduals))
 ```
 
-Again, there appears to be no correlation between the residuals and the other variables.
+Again, the residuals appear to have a normal distribution and there appears to be no correlation between the residuals and the other variables.
 
 ## 11.58
 
